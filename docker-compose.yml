@@ -1,6 +1,14 @@
 version: '3.8'
-name: microservice_mechanic
+name: microservice_app
 services:
+  angular-front:
+    image: guillermopalacios/angular-mechanic
+    container_name: front_app
+    ports:
+      - "4200:80"
+    networks:
+      - mechanic-net
+    
   discovery-server:
     image: guillermopalacios/imechanic-project-microservices-discovery-server
     container_name: discovery_server
@@ -8,6 +16,8 @@ services:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery-server:8761/eureka
     ports:
       - "8761:8761"
+    depends_on:
+      - angular-front
     networks:
       - mechanic-net
 
@@ -27,7 +37,7 @@ services:
       - mechanic-net
 
   principal-service:
-    image: guillermopalacios/imechanic-project-microservices-order-service
+    image: guillermopalacios/imechanic-project-microservices-principal-service
     container_name: principal_service
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery-server:8761/eureka
@@ -39,12 +49,13 @@ services:
       URL_FRONT: http://localhost:4200
     depends_on:
       - db_principal
+      - discovery-server
     networks:
       - principal-net
       - mechanic-net
 
   order-service:
-    image: guillermopalacios/imechanic-project-microservices-principal-service
+    image: guillermopalacios/imechanic-project-microservices-order-service
     container_name: order_service
     depends_on:
       - discovery-server
