@@ -30,6 +30,7 @@ services:
       - discovery_server
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery_server:8761/eureka
+      URL_FRONT: http://angular_front
     networks:
       - mechanic-net
 
@@ -39,6 +40,7 @@ services:
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery_server:8761/eureka
       SPRING_DATASOURCE_URL: jdbc:mysql://db_principal:3306/principal_db
+      URL_FRONT: http://angular_front
     depends_on:
       - db_principal
       - discovery_server
