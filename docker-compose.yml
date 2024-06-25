@@ -1,60 +1,58 @@
 version: '3.8'
 name: microservice_app
 services:
-  angular-front:
-    image: guillermopalacios/angular-mechanic
+  angular_front:
+    image: guillermopalacios/angular_mechanic
     container_name: front_app
     ports:
       - "4200:80"
     networks:
       - mechanic-net
     
-  discovery-server:
+  discovery_server:
     image: guillermopalacios/microservice_mechanic_discovery_server
     container_name: discovery_server
     environment:
-      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery-server:8761/eureka
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery_server:8761/eureka
     ports:
       - "8761:8761"
     depends_on:
-      - angular-front
+      - angular_front
     networks:
       - mechanic-net
 
-  api-gateway:
+  api_gateway:
     image: guillermopalacios/microservice_mechanic_api_gateway
     container_name: api_gateway
     ports:
       - "8080:8080"
     depends_on:
-      - discovery-server
+      - discovery_server
     environment:
-      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery-server:8761/eureka
-      URL_FRONT: "*"
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery_server:8761/eureka
     networks:
       - mechanic-net
 
-  principal-service:
+  principal_service:
     image: guillermopalacios/microservice_mechanic_principal_service
     container_name: principal_service
     environment:
-      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery-server:8761/eureka
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery_server:8761/eureka
       SPRING_DATASOURCE_URL: jdbc:mysql://db_principal:3306/principal_db
-      URL_FRONT: "*"
     depends_on:
       - db_principal
-      - discovery-server
+      - discovery_server
     networks:
       - principal-net
       - mechanic-net
 
-  order-service:
+  order_service:
     image: guillermopalacios/microservice_mechanic_order_service
     container_name: order_service
     depends_on:
-      - discovery-server
+      - discovery_server
     environment:
-      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery-server:8761/eureka
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery_server:8761/eureka
       MONGODB_URI: mongodb+srv://nothi:129837465lg@cluster0.na3zkcc.mongodb.net/work_order_db?retryWrites=true&w=majority&appName=Cluster0
     networks:
       - mechanic-net
