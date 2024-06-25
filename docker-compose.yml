@@ -10,7 +10,7 @@ services:
       - mechanic-net
     
   discovery-server:
-    image: guillermopalacios/imechanic-project-microservices-discovery-server
+    image: guillermopalacios/microservice_mechanic_discovery_server
     container_name: discovery_server
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery-server:8761/eureka
@@ -22,7 +22,7 @@ services:
       - mechanic-net
 
   api-gateway:
-    image: guillermopalacios/imechanic-project-microservices-api-gateway
+    image: guillermopalacios/microservice_mechanic_api_gateway
     container_name: api_gateway
     ports:
       - "8080:8080"
@@ -31,21 +31,15 @@ services:
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery-server:8761/eureka
       URL_FRONT: http://localhost:4200
-      PRIVATE_KEY_JWT: 328f74ed284fbdbe7bde89e466e630088648ac27d900e9545cf3d082f566467c
-      PRIVATE_USER_JWT: MECHANICAPP-AUTH0JWT
     networks:
       - mechanic-net
 
   principal-service:
-    image: guillermopalacios/imechanic-project-microservices-principal-service
+    image: guillermopalacios/microservice_mechanic_principal_service
     container_name: principal_service
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery-server:8761/eureka
       SPRING_DATASOURCE_URL: jdbc:mysql://db_principal:3306/principal_db
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 129837465lg
-      PRIVATE_KEY_JWT: 328f74ed284fbdbe7bde89e466e630088648ac27d900e9545cf3d082f566467c
-      PRIVATE_USER_JWT: MECHANICAPP-AUTH0JWT
       URL_FRONT: http://localhost:4200
     depends_on:
       - db_principal
@@ -55,15 +49,13 @@ services:
       - mechanic-net
 
   order-service:
-    image: guillermopalacios/imechanic-project-microservices-order-service
+    image: guillermopalacios/microservice_mechanic_order_service
     container_name: order_service
     depends_on:
       - discovery-server
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery-server:8761/eureka
       MONGODB_URI: mongodb+srv://nothi:129837465lg@cluster0.na3zkcc.mongodb.net/work_order_db?retryWrites=true&w=majority&appName=Cluster0
-      PRIVATE_KEY_JWT: 328f74ed284fbdbe7bde89e466e630088648ac27d900e9545cf3d082f566467c
-      PRIVATE_USER_JWT: MECHANICAPP-AUTH0JWT
     networks:
       - mechanic-net
 
