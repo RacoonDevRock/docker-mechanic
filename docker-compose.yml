@@ -1,14 +1,6 @@
 version: '3.8'
 name: microservice-app
 services:
-  front:
-    image: guillermopalacios/front
-    container_name: front-app
-    ports:
-      - "4200:80"
-    networks:
-      - web-net
-    
   discovery:
     image: guillermopalacios/microservice-app-discovery-server
     container_name: discovery-server
@@ -30,7 +22,6 @@ services:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery:8761/eureka
       URL_FRONT: http://localhost:4200
     networks:
-      - web-net
       - mechanic-net
 
   main:
@@ -81,6 +72,4 @@ networks:
   mechanic-net:
     driver: bridge
   principal-net:
-    driver: bridge
-  web-net:
     driver: bridge
