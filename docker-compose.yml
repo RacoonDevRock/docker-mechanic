@@ -10,7 +10,7 @@ services:
       - mechanic-net
     
   discovery:
-    image: guillermopalacios/microservice_mechanic_discovery_server
+    image: guillermopalacios/microservice-app-discovery-server
     container_name: discovery-server
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery:8761/eureka
@@ -20,7 +20,7 @@ services:
       - mechanic-net
 
   gateway:
-    image: guillermopalacios/microservice_mechanic_api_gateway
+    image: guillermopalacios/microservice-app-api-gateway
     container_name: api-gateway
     ports:
       - "8080:8080"
@@ -33,7 +33,7 @@ services:
       - mechanic-net
 
   main:
-    image: guillermopalacios/microservice_mechanic_principal_service
+    image: guillermopalacios/microservice-app-principal-service
     container_name: principal-service
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery:8761/eureka
@@ -41,14 +41,17 @@ services:
       URL_FRONT: http://front:80
     depends_on:
       - db
+      - gateway
       - discovery
     networks:
+      - principal-net
       - mechanic-net
 
   order:
-    image: guillermopalacios/microservice_mechanic_order_service
+    image: guillermopalacios/microservice-app-order-service
     container_name: order-service
     depends_on:
+      - gateway
       - discovery
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery:8761/eureka
@@ -57,8 +60,8 @@ services:
       - mechanic-net
 
   db:
-    image: guillermopalacios/mysql_data
     restart: always
+    image: guillermopalacios/microservice-app-mysql-main
     container_name: mysql-container
     environment:
       MYSQL_ROOT_PASSWORD: 129837465lg
@@ -68,11 +71,13 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
-      - mechanic-net
+      - principal-net
 
 volumes:
   mysql_data:
 
 networks:
   mechanic-net:
+    driver: bridge
+  principal-net:
     driver: bridge
