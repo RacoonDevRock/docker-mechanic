@@ -36,7 +36,6 @@ services:
       - gateway
       - discovery
     networks:
-      - principal-net
       - mechanic-net
 
   order:
@@ -63,13 +62,11 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
-      - principal-net
+      - mechanic-net
 
 volumes:
   mysql_data:
 
 networks:
   mechanic-net:
-    driver: bridge
-  principal-net:
     driver: bridge
