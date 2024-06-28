@@ -45,9 +45,10 @@ services:
     depends_on:
       - gateway
       - discovery
+      - mongodb  # Añadido para depender del servicio de MongoDB
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery:8761/eureka
-      MONGODB_URI: mongodb+srv://nothi:129837465lg@cluster0.na3zkcc.mongodb.net/work_order_db?retryWrites=true&w=majority&appName=Cluster0
+      MONGODB_URI: mongodb://mongodb:27017/work_order_db
     networks:
       - mechanic-net
 
@@ -65,8 +66,22 @@ services:
     networks:
       - mechanic-net
 
+  mongodb:
+    image: mongo:4.2
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 129837465lg
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - mechanic-net
+
 volumes:
   mysql_data:
+  mongo_data:
 
 networks:
   mechanic-net:
