@@ -1,14 +1,7 @@
 version: '3.8'
 name: microservice-app
-services:
-  front:
-    image: guillermopalacios/front
-    container_name: front-app
-    ports:
-      -"4200:80"
-    networks:
-      - microservice-net
 
+services:
   discovery:
     image: guillermopalacios/microservice-app-discovery-server
     container_name: discovery-server
@@ -17,7 +10,7 @@ services:
     ports:
       - "8761:8761"
     networks:
-      - microservice-net
+      - mechanic-net
 
   gateway:
     image: guillermopalacios/microservice-app-api-gateway
@@ -28,9 +21,9 @@ services:
       - discovery
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery:8761/eureka
-      URL_FRONT: http://front:80
+      URL_FRONT: http://localhost:4200
     networks:
-      - microservice-net
+      - mechanic-net
 
   main:
     image: guillermopalacios/microservice-app-principal-service
@@ -38,13 +31,13 @@ services:
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery:8761/eureka
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/principal_db
-      URL_FRONT: http://front:80
+      URL_FRONT: http://localhost:4200
     depends_on:
       - db
       - gateway
       - discovery
     networks:
-      - microservice-net
+      - mechanic-net
 
   order:
     image: guillermopalacios/microservice-app-order-service
@@ -56,7 +49,7 @@ services:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery:8761/eureka
       MONGODB_URI: mongodb+srv://nothi:129837465lg@cluster0.na3zkcc.mongodb.net/work_order_db?retryWrites=true&w=majority&appName=Cluster0
     networks:
-      - microservice-net
+      - mechanic-net
 
   db:
     restart: always
@@ -70,11 +63,11 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
-      - microservice-net
+      - mechanic-net
 
 volumes:
   mysql_data:
 
 networks:
-  microservice-net:
+  mechanic-net:
     driver: bridge
