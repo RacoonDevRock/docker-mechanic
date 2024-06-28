@@ -21,7 +21,7 @@ services:
       - discovery
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery:8761/eureka
-      URL_FRONT: https://imechanic.netlify.app
+      URL_FRONT: http://imechanic.netlify.app
     networks:
       - mechanic-net
 
@@ -31,7 +31,7 @@ services:
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery:8761/eureka
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/principal_db
-      URL_FRONT: https://imechanic.netlify.app
+      URL_FRONT: http://imechanic.netlify.app
     depends_on:
       - db
       - gateway
