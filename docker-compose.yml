@@ -45,7 +45,7 @@ services:
     container_name: order-service
     restart: on-failure
     depends_on:
-      - mongo
+      - monguito
       - gateway
       - discovery
     environment:
