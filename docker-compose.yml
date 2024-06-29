@@ -53,6 +53,7 @@ services:
       MONGODB_URI: mongodb://root:129837465lg@monguito:27017/work_order_db?authSource=admin&retryWrites=true&w=majority&connectTimeoutMS=30000&socketTimeoutMS=30000
     networks:
       - mechanic-net
+      - mongo-net
 
   db:
     restart: always
@@ -79,7 +80,7 @@ services:
     volumes:
       - mongo_data:/data/db
     networks:
-      - mechanic-net
+      - mongo-net
 
 volumes:
   mysql_data:
@@ -87,4 +88,6 @@ volumes:
 
 networks:
   mechanic-net:
+    driver: bridge
+  mongo-net:
     driver: bridge
