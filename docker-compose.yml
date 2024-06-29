@@ -50,7 +50,7 @@ services:
       - discovery
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery:8761/eureka
-      MONGODB_URI: mongodb://root:129837465lg@monguito:27017/work_order_db?authSource=admin&retryWrites=true&w=majority
+      MONGODB_URI: mongodb://root:129837465lg@monguito:27017/work_order_db?authSource=admin&retryWrites=true&w=majority&connectTimeoutMS=30000&socketTimeoutMS=30000
     networks:
       - mechanic-net
 
