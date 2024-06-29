@@ -28,6 +28,7 @@ services:
   main:
     image: guillermopalacios/microservice-app-principal-service
     container_name: principal-service
+    restart: on-failure
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery:8761/eureka
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/principal_db
@@ -42,6 +43,7 @@ services:
   order:
     image: guillermopalacios/microservice-app-order-service
     container_name: order-service
+    restart: on-failure
     depends_on:
       - mongo
       - gateway
@@ -53,7 +55,7 @@ services:
       - mechanic-net
 
   db:
-    restart: always
+    restart: unless-stopped
     image: guillermopalacios/microservice-app-mysql-main
     container_name: mysql-container
     environment:
