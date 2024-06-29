@@ -69,7 +69,7 @@ services:
   mongo:
     restart: always
     image: guillermopalacios/microservice-app-mongodb-order
-    container_name: mongo_container
+    container_name: db-container
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: 129837465lg
