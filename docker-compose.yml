@@ -55,7 +55,7 @@ services:
       - mechanic-net
 
   db:
-    restart: unless-stopped
+    restart: always
     image: guillermopalacios/microservice-app-mysql-main
     container_name: mysql-container
     environment:
@@ -69,7 +69,7 @@ services:
       - mechanic-net
 
   mongo:
-    restart: always
+    restart: unless-stopped
     image: guillermopalacios/microservice-app-mongodb-order
     container_name: db-container
     environment:
