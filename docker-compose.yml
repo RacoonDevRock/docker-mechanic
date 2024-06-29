@@ -48,7 +48,7 @@ services:
       - discovery
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://discovery:8761/eureka
-      MONGODB_URI: mongodb://root:129837465lg@mongodb:27017/work_order_db?authSource=admin
+      MONGODB_URI: mongodb://root:129837465lg@mongo:27017/work_order_db?authSource=admin
     networks:
       - mechanic-net
 
@@ -66,7 +66,7 @@ services:
     networks:
       - mechanic-net
 
-  mongodb:
+  mongo:
     restart: always
     image: guillermopalacios/microservice-app-mongodb-order
     container_name: mongo_container
