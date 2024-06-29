@@ -69,7 +69,6 @@ services:
       - mechanic-net
 
   monguito:
-    restart: always
     image: guillermopalacios/microservice-app-mongodb-order
     container_name: mongodb-container
     environment:
